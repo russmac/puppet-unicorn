@@ -1,0 +1,22 @@
+worker_processes <%= @worker_processes %>
+working_directory '<%= @app_root %>'
+listen '<%= @app_socket %>', :backlog => <%= @backlog %>
+timeout <%= @timeout %>
+pid '<%= @pid_file %>'
+user '<%= @user %>'
+stderr_path '/var/log/unicorn/<%= @app_name %>_error.log'
+stdout_path '/var/log/unicorn/<%= @app_name %>.log'
+preload_app true
+if GC.respond_to?(:copy_on_write_friendly=)
+    GC.copy_on_write_friendly = true
+end
+
+before_fork do |server, worker|
+    old_pid = "#{server.config[:pid]}.oldbin"
+    if File.exists?(old_pid) && server.pid != old_pid
+        begin
+            Process.kill("QUIT", File.read(old_pid).to_i)
+        rescue Errno::ENOENT, Errno::ESRCH
+        end
+    end
+end
