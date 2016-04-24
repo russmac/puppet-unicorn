@@ -1,7 +1,7 @@
 class unicorn(
 ) inherits unicorn::params {
 
-  package{$unicorn_dependencies:
+  package{$unicorn::unicorn_dependencies:
     ensure => present,
   }
 
@@ -11,7 +11,7 @@ class unicorn(
     shell      => '/bin/false'
   }
 
-  package{$unicorn_gem_dependencies:
+  package{$unicorn::unicorn_gem_dependencies:
     ensure   => present,
     provider => gem,
   }
@@ -19,12 +19,14 @@ class unicorn(
   package{'unicorn':
     ensure   => present,
     provider => gem,
-    require  => [Package[$unicorn_dependencies],Package[$unicorn_gem_dependencies]]
+    require  => [Package[$unicorn::unicorn_dependencies],
+                Package[$unicorn::unicorn_gem_dependencies]
+                ]
   }
 
   file{'/var/log/unicorn':
     ensure => directory,
-    mode   => 777,
+    mode   => '0777',
   }
 
 }

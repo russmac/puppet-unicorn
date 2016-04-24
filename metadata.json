@@ -1,9 +1,16 @@
 {
   "name": "russmac-unicorn",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "author": "russmac",
   "summary": "Unicorn",
   "license": "Apache 2.0",
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Debian",
+      "operatingsystemrelease": [ "8.0","8.1","8.2","8.3","8.4" ]
+    }
+  ],
+  "data_provider": "hiera",
   "source": "https://github.com/russmac/puppet-unicorn",
   "project_page": "https://github.com/russmac/puppet-unicorn",
   "issues_url": "https://github.com/russmac/puppet-unicorn/issues",
