@@ -5,6 +5,12 @@ class unicorn(
     ensure => present,
   }
 
+  user{'unicorn':
+    ensure     => present,
+    managehome => false,
+    shell      => '/bin/false'
+  }
+
   package{$unicorn_gem_dependencies:
     ensure   => present,
     provider => gem,

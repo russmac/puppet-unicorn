@@ -1,0 +1,12 @@
+# The hiera data
+ruby_apps:
+  my_application:
+    app_root: /opt/my_application
+  my_other_application:
+    user: steve
+    rails_env: dev
+    bundle: true
+    app_root: /opt/my_other_application
+    worker_processes: 10
+    backlog: 24
+    timeout: 30

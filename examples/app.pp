@@ -1,14 +1,3 @@
-# puppet-unicorn
-
-Creates a deamonized init script which is just original unicorn script modified and templated.
-
-Works on debian jessie 8.3 with systemd
-
-Could be useful to quickly spin up ruby apps for CI by wrappering with a define
-
-### see examples folder for example usage.
-
-```
 # Wrapper class see app.yaml
 class wrapper_class(
   $ruby_apps=hiera('ruby_apps')
@@ -27,7 +16,7 @@ define wrapper_define(
   $app_data,
   $self=$app_data[$name]
 ){
-  
+
   unicorn::generate{ $name:
     app_root          => $self['app_root'],
     user              => $self['user'],                   # optional
@@ -41,5 +30,3 @@ define wrapper_define(
   }
 
 }
-
-```
