@@ -4,14 +4,16 @@ define unicorn::generate(
   $app_name=$name,
   $bundle=false,
   $rails_env=false,
-  $app_socket="${app_root}/tmp/${app_name}.socket",
-  $pid_file="${app_root}/tmp/${app_name}.pid",
   $user=$unicorn::params::user,
   $group='unicorn',
   $worker_processes=$unicorn::params::worker_processes,
   $backlog=$unicorn::params::backlog,
   $timeout=$unicorn::params::timeout,
 ) {
+  # Required after class instantiation to access app_root|app_name
+  $app_socket="${app_root}/tmp/${app_name}.socket"
+  $pid_file="${app_root}/tmp/${app_name}.pid"
+
   require unicorn
 
   # Create the user, Make part of the wider unicorn group
@@ -41,14 +43,6 @@ define unicorn::generate(
       content => template('unicorn/etc/init.d/unicorn_bundler.init.erb'),
       mode    => '0744',
       notify  => Service[$app_name],
-    } ~>
-    exec{"PUP-5972 workaround ${app_name}":
-      command     => "/bin/systemctl enable ${app_name}",
-      refreshonly => true
-    } ~>
-    service{$app_name:
-      ensure => running,
-      enable => true,
     }
 
   # Non bundler app
@@ -79,7 +73,7 @@ define unicorn::generate(
   } ~>
   exec{"PUP-5972 workaround ${app_name}":
     command     => "/bin/systemctl enable ${app_name}",
-    refreshonly => true
+    refreshonly => true,
   } ~>
   service{$app_name:
     ensure => running,
