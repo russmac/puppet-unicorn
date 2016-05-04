@@ -1,9 +1,9 @@
 {
   "name": "russmac-unicorn",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "author": "russmac",
-  "summary": "Unicorn",
-  "license": "Apache 2.0",
+  "summary": "Unicorn daemonizer for Rails/Non rails and Bundle/Non bundle apps",
+  "license": "Apache-2.0",
   "operatingsystem_support": [
     {
       "operatingsystem": "Debian",
@@ -13,9 +13,6 @@
   "data_provider": "hiera",
   "source": "https://github.com/russmac/puppet-unicorn",
   "project_page": "https://github.com/russmac/puppet-unicorn",
-  "issues_url": "https://github.com/russmac/puppet-unicorn/issues",
-  "dependencies": [
-    {"name":"puppetlabs-stdlib","version_requirement":">= 1.0.0"}
-  ]
+  "issues_url": "https://github.com/russmac/puppet-unicorn/issues"
 }
 
