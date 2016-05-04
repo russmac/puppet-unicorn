@@ -38,11 +38,12 @@ define unicorn::generate(
       cwd    => $app_root,
       unless => 'diff Gemfile Gemfile.compare'
     }
+
     file{ "/etc/init.d/${app_name}":
       ensure  => present,
       content => template('unicorn/etc/init.d/unicorn_bundler.init.erb'),
       mode    => '0744',
-      notify  => Service[$app_name],
+      notify  => [Service[$app_name],Exec["PUP-5972 workaround ${app_name}"]]
     }
 
   # Non bundler app
@@ -50,7 +51,7 @@ define unicorn::generate(
     file{ "/etc/init.d/${app_name}":
       content => template('unicorn/etc/init.d/unicorn.init.erb'),
       mode    => '0744',
-      notify  => Service[$app_name],
+      notify  => [Service[$app_name],Exec["PUP-5972 workaround ${app_name}"]]
     }
   }
 
@@ -66,18 +67,22 @@ define unicorn::generate(
     group  => $group,
     mode   => '0755',
   } ->
-  file{"${app_root}/config/unicorn.conf.rb":
+  file{ "${app_root}/config/unicorn.conf.rb":
     ensure  => present,
     content => template('unicorn/config/unicorn.conf.rb.erb'),
     mode    => '0644',
-  } ~>
+    notify  => Service[$app_name],
+  } ->
   exec{"PUP-5972 workaround ${app_name}":
     command     => "/bin/systemctl enable ${app_name}",
     refreshonly => true,
-  } ~>
+    require     => File["/etc/init.d/${app_name}"],
+  }
+
   service{$app_name:
-    ensure => running,
-    enable => true,
+    ensure  => running,
+    enable  => true,
+    require => [File["/etc/init.d/${app_name}"],Exec["PUP-5972 workaround ${app_name}"]]
   }
 
 }
