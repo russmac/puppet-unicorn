@@ -25,8 +25,10 @@ class unicorn(
   }
 
   file{'/var/log/unicorn':
-    ensure => directory,
-    mode   => '0777',
+    ensure  => directory,
+    group   => $group,
+    mode    => '0661',
+    require => User[unicorn]
   }
 
 }

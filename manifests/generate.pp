@@ -5,7 +5,7 @@ define unicorn::generate(
   $bundle=false,
   $rails_env=false,
   $user=$unicorn::params::user,
-  $group='unicorn',
+  $group=$unicorn::params::group,
   $worker_processes=$unicorn::params::worker_processes,
   $backlog=$unicorn::params::backlog,
   $timeout=$unicorn::params::timeout,
